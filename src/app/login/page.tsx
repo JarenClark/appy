@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { headers, cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/utils/supabase'
+import { Button } from '@/components/ui/button'
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string }
@@ -15,7 +16,6 @@ export default function Login({
     const password = formData.get('password') as string
     const cookieStore = cookies()
     const supabase = createServerClient(cookieStore)
-
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -36,7 +36,6 @@ export default function Login({
     const password = formData.get('password') as string
     const cookieStore = cookies()
     const supabase = createServerClient(cookieStore)
-
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -50,6 +49,24 @@ export default function Login({
     }
 
     return redirect('/login?message=Check email to continue sign in process')
+  }
+
+  const googleSignIn = async (formData: FormData) => {
+    'use server'
+    console.log('googlesignin')
+    const origin = headers().get('origin')
+    const cookieStore = cookies()
+    const supabase = createServerClient(cookieStore)
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${origin}/api/auth/callback`,
+      },
+    })
+
+    if (data.url) {
+      redirect(data.url) // use the redirect API for your server framework
+    }
   }
 
   return (
@@ -107,11 +124,17 @@ export default function Login({
         >
           Sign Up
         </button>
+
         {searchParams?.message && (
           <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
             {searchParams.message}
           </p>
         )}
+      </form>
+      <form action={googleSignIn}>
+        <div className="mx-auto flex justify-center">
+          <Button>Login with Google</Button>
+        </div>
       </form>
     </div>
   )
