@@ -14,10 +14,10 @@ export default async function ItemTypeListing({ spaceId }: Props) {
 
   return (
     <>
-      <div className="mt-4 flex justify-between border-t-2 border-black p-4 px-5">
+      <div className="mt-4 flex justify-between border-t-2 border-black px-5 pt-2">
         <div className=" flex items-center space-x-2 text-muted-foreground">
           {/* <BoxesIcon className="w-5 h-5" /> */}
-          <Label>Object Types </Label>
+          <Label>Content Types </Label>
         </div>
         <button className="flex items-center space-x-1 rounded-full p-1 pl-1 pr-3 text-muted-foreground hover:bg-black/50 hover:text-white">
           <PlusIcon className="h-4 w-4"></PlusIcon>
@@ -26,7 +26,10 @@ export default async function ItemTypeListing({ spaceId }: Props) {
       </div>
       <ul className="block px-5">
         {itemtypes?.map((itemType: any, i: number) => (
-          <li key={i} className="text-muted-foreground hover:text-white">
+          <li
+            key={i}
+            className="cursor-pointer text-muted-foreground hover:text-white"
+          >
             <Link href={`/spaces/${spaceId}/types/${itemType.id}`}>
               <Label>{itemType.name}</Label>
             </Link>

@@ -19,7 +19,7 @@ export default async function ItemTypePage({ params }: Props) {
   const { data: itemType } = await getItemTypeById(supabase, params.typeId)
   const { data: items } = await getItemsByType(supabase, params.typeId)
   return (
-    <>
+    <div className="justify-123-between flex h-screen flex-col">
       <ItemTypeHeader id={params.typeId} name={itemType.name} />
       <div className="container mx-auto max-w-6xl">
         <ul className="-mx-4 mt-8 flex flex-wrap">
@@ -35,6 +35,6 @@ export default async function ItemTypePage({ params }: Props) {
         </ul>
         <pre>{JSON.stringify(itemType, null, 2)}</pre>
       </div>
-    </>
+    </div>
   )
 }

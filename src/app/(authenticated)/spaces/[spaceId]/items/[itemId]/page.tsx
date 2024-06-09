@@ -1,3 +1,4 @@
+import ItemBlockEditor from '@/components/items/ItemBlockEditor'
 import ItemHeader from '@/components/items/ItemHeader'
 import { getItemById } from '@/queries/get-item-by-id'
 import { createServerClient } from '@/utils/supabase'
@@ -15,10 +16,17 @@ export default async function ItemPage({ params }: Props) {
   const cookieStore = cookies()
   const supabase = createServerClient(cookieStore)
   const { data: item } = await getItemById(supabase, params.itemId)
+  if (!item) return null
   return (
     <>
       <ItemHeader id={params.itemId} title={item.title} />
+
       <div className="container mx-auto max-w-6xl py-8">
+        <ItemBlockEditor
+          itemId={params.itemId}
+          content={item.content}
+          blockjson={item.blocks ? JSON.parse(item.blocks) : []}
+        />
         <pre>{JSON.stringify(item, null, 2)}</pre>
       </div>
     </>
