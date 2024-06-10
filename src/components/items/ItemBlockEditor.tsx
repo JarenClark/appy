@@ -11,13 +11,13 @@ import { updateItemBlocks } from '@/queries/update-item-blocks'
 import { createBrowserClient } from '@/utils/supabase'
 import { Button } from '../ui/button'
 import { updateBlock } from '@/app/actions/items/updateBlocks'
-type Props = { itemId: string; blockjson: Block[]; content: string }
+type Props = { itemId: string; content: Block[] }
 
-function ItemBlockEditor({ itemId, blockjson, content }: Props) {
+function ItemBlockEditor({ itemId, content }: Props) {
   const supabase = createBrowserClient()
 
   // states
-  const [blocks, setBlocks] = useState<Block[]>(blockjson ? blockjson : [])
+  const [blocks, setBlocks] = useState<Block[]>(content ? content : [])
   const [changed, setChanged] = useState(false)
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -57,7 +57,6 @@ function ItemBlockEditor({ itemId, blockjson, content }: Props) {
   }
   return (
     <>
-      <pre>{content}</pre>
       <div className="mb-4 flex justify-end">
         <form action={handleUpdate}>
           <Button type="submit" size={'sm'} variant={'secondary'}>
@@ -73,7 +72,7 @@ function ItemBlockEditor({ itemId, blockjson, content }: Props) {
           setBlocks(editor?.document ? editor.document : [])
         }}
       />
-      <pre>{JSON.stringify(blocks, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(blocks, null, 2)}</pre> */}
     </>
   )
 }
