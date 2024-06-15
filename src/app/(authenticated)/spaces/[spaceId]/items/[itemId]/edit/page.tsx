@@ -1,4 +1,5 @@
 import ItemBlockEditor from '@/components/items/ItemBlockEditor'
+import ItemBlocks from '@/components/items/ItemBlocks'
 import { getItemById } from '@/queries/get-item-by-id'
 import { createServerClient } from '@/utils/supabase'
 import { cookies } from 'next/headers'
@@ -18,10 +19,11 @@ export default async function ItemEditPage({ params }: Props) {
   if (!item) return null
 
   const blocks = item.blocks ? JSON.parse(item.blocks) : []
-  console.log('blocks', blocks)
+  // console.log('blocks', blocks)
   return (
     <div className="container mx-auto max-w-6xl py-8">
-      <ItemBlockEditor itemId={params.itemId} content={blocks} />
+      <ItemBlocks itemId={params.itemId} initialBlocks={blocks} />
+      <ItemBlockEditor itemId={params.itemId} serverblocks={blocks} />
     </div>
   )
 }

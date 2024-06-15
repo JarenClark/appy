@@ -11,20 +11,25 @@ import { updateItemBlocks } from '@/queries/update-item-blocks'
 import { createBrowserClient } from '@/utils/supabase'
 import { Button } from '../ui/button'
 import { updateBlock } from '@/app/actions/items/updateBlocks'
-type Props = { itemId: string; content: Block[] }
+type Props = { itemId: string; serverblocks: Block[] }
 
-function ItemBlockEditor({ itemId, content }: Props) {
+function ItemBlockEditor({ itemId, serverblocks }: Props) {
   const supabase = createBrowserClient()
+  console.log(`SERVERBLOCKS`, serverblocks)
 
   // states
-  const [blocks, setBlocks] = useState<Block[]>(content ? content : [])
+  const [blocks, setBlocks] = useState<Block[]>(
+    serverblocks ? serverblocks : [],
+  )
   const [changed, setChanged] = useState(false)
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   // Creates a new editor instance.
-  const editor = useCreateBlockNote()
+  const editor = useCreateBlockNote({
+    initialContent: serverblocks ? serverblocks : [],
+  })
 
   //  console.log('content is ', content)
   const handleUpdate = async () => {
@@ -55,6 +60,8 @@ function ItemBlockEditor({ itemId, content }: Props) {
       setLoading(false)
     }
   }
+
+  // const mutation = useMutation(updateItemBlocks)
   return (
     <>
       <div className="mb-4 flex justify-end">

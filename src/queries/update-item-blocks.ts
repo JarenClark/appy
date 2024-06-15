@@ -4,8 +4,8 @@ import { SupabaseClient } from '@supabase/supabase-js'
 
 export async function updateItemBlocks(
   client: any,
-  blocks: any,
   itemId: string,
+  blocks: any,
 ) {
   console.log('args inside queries', itemId, blocks)
   console.log('itemId is', itemId)
@@ -13,7 +13,7 @@ export async function updateItemBlocks(
 
   const { data, error } = await client
     .from('items')
-    .update({ content: 'hello world' })
+    .update({ content: blocks })
     .eq('id', itemId)
     .select()
 
